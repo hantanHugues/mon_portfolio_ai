@@ -7,21 +7,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Trash2, Star, TrendingUp, Award, Target, Sparkles, Download, Upload, Search, Filter, BarChart3, Zap, Brain, Code, Palette, Grid3X3, Table, Radar, Clock, Eye, FileText, Calendar, ExternalLink, AlertCircle, CheckCircle } from "lucide-react";
+import { Plus, Search, Filter, Grid3X3, Table, Radar, Clock, Award, TrendingUp, Star, Sparkles, Zap, Code, Target, Brain, Trash2, BarChart3, CheckCircle, AlertCircle, Calendar, ExternalLink, ChevronDown, ChevronUp, Upload, Download, FileText } from "lucide-react";
 import { useState } from "react";
 
 const Skills = () => {
   const [isAddSkillOpen, setIsAddSkillOpen] = useState(false);
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
-  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [viewMode, setViewMode] = useState("cards"); // "cards", "table", "radar", "timeline"
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+  const [showAllInTable, setShowAllInTable] = useState(false);
   const [isAddCertificationOpen, setIsAddCertificationOpen] = useState(false);
   const [certSearchTerm, setCertSearchTerm] = useState("");
   const [certFilter, setCertFilter] = useState("all"); // "all", "active", "expiring", "expired"
-
-  // Données enrichies avec niveaux et progression
+  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
   const skillCategories = [
     {
       id: 1,
@@ -309,49 +309,49 @@ const Skills = () => {
         </div>
       </div>
 
-      {/* Statistiques rapides */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-              <Award className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+      {/* Statistiques rapides - Version compacte */}
+      <div className="grid grid-cols-4 gap-3">
+        <Card className="p-3">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-primary/10 rounded-md">
+              <Award className="h-3 w-3 text-primary" />
             </div>
             <div>
-              <div className="text-2xl font-bold">{totalSkills}</div>
-              <div className="text-sm text-muted-foreground">Compétences</div>
+              <div className="text-lg font-bold">{totalSkills}</div>
+              <div className="text-xs text-muted-foreground">Compétences</div>
             </div>
           </div>
         </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
-              <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
+        <Card className="p-3">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-green-500/10 rounded-md">
+              <TrendingUp className="h-3 w-3 text-green-600 dark:text-green-400" />
             </div>
             <div>
-              <div className="text-2xl font-bold">{averageLevel}%</div>
-              <div className="text-sm text-muted-foreground">Niveau moyen</div>
+              <div className="text-lg font-bold">{averageLevel}%</div>
+              <div className="text-xs text-muted-foreground">Niveau moy.</div>
             </div>
           </div>
         </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
-              <Star className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+        <Card className="p-3">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-orange-500/10 rounded-md">
+              <Star className="h-3 w-3 text-orange-600 dark:text-orange-400" />
             </div>
             <div>
-              <div className="text-2xl font-bold">{expertSkills}</div>
-              <div className="text-sm text-muted-foreground">Niveau expert</div>
+              <div className="text-lg font-bold">{expertSkills}</div>
+              <div className="text-xs text-muted-foreground">Expert</div>
             </div>
           </div>
         </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
-              <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+        <Card className="p-3">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-purple-500/10 rounded-md">
+              <Sparkles className="h-3 w-3 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <div className="text-2xl font-bold">{aiSuggestions.length}</div>
-              <div className="text-sm text-muted-foreground">Suggestions IA</div>
+              <div className="text-lg font-bold">{aiSuggestions.length}</div>
+              <div className="text-xs text-muted-foreground">IA</div>
             </div>
           </div>
         </Card>
@@ -400,7 +400,7 @@ const Skills = () => {
         {/* Sélecteur de mode de vue */}
         <div className="flex items-center gap-1 p-1 bg-muted rounded-lg">
           <Button
-            variant={viewMode === "cards" ? "default" : "ghost"}
+            variant={(viewMode === "cards" ? "default" : "ghost") as "default" | "ghost"}
             size="sm"
             onClick={() => setViewMode("cards")}
             className="gap-2"
@@ -409,7 +409,7 @@ const Skills = () => {
             Cards
           </Button>
           <Button
-            variant={viewMode === "table" ? "default" : "ghost"}
+            variant={(viewMode === "table" ? "default" : "ghost") as "default" | "ghost"}
             size="sm"
             onClick={() => setViewMode("table")}
             className="gap-2"
@@ -417,80 +417,86 @@ const Skills = () => {
             <Table className="h-4 w-4" />
             Tableau
           </Button>
-          <Button
-            variant={viewMode === "radar" ? "default" : "ghost"}
-            size="sm"
-            onClick={() => setViewMode("radar")}
-            className="gap-2"
-          >
-            <Radar className="h-4 w-4" />
-            Radar
-          </Button>
-          <Button
-            variant={viewMode === "timeline" ? "default" : "ghost"}
-            size="sm"
-            onClick={() => setViewMode("timeline")}
-            className="gap-2"
-          >
-            <Clock className="h-4 w-4" />
-            Timeline
-          </Button>
         </div>
       </div>
 
       {/* Affichage dynamique selon le mode */}
       {viewMode === "cards" && (
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           {filteredCategories.map((category) => {
             const IconComponent = category.icon;
+            const isExpanded = expandedCategories.has(category.category);
+            const skillsToShow = isExpanded ? category.skills : category.skills.slice(0, 3);
+            
             return (
-              <Card key={category.id} className="hover:shadow-lg transition-all duration-300">
-                <CardHeader>
+              <Card key={category.id} className="hover:shadow-md transition-all duration-200 cursor-pointer group border-l-4 border-l-transparent hover:border-l-primary">
+                <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 ${category.color} rounded-lg`}>
-                        <IconComponent className="h-5 w-5 text-white" />
+                    <div className="flex items-center gap-2">
+                      <div className={`p-1.5 rounded-md ${category.color}`}>
+                        <IconComponent className="h-4 w-4 text-white" />
                       </div>
                       <div>
-                        <CardTitle>{category.category}</CardTitle>
-                        <CardDescription>
-                          {category.skills.length} compétences • Niveau moyen: {Math.round(category.skills.reduce((sum, skill) => sum + skill.level, 0) / category.skills.length)}%
+                        <CardTitle className="text-base">{category.category}</CardTitle>
+                        <CardDescription className="text-xs">
+                          {category.skills.length} compétence{category.skills.length > 1 ? 's' : ''}
                         </CardDescription>
                       </div>
                     </div>
-                    <Button variant="ghost" size="sm" className="gap-2">
-                      <Plus className="h-4 w-4" />
-                      Ajouter
+                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Plus className="h-3 w-3" />
                     </Button>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {category.skills.map((skill) => (
-                    <div key={skill.name} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{skill.name}</span>
-                          <Badge variant="outline" className="text-xs">
-                            {skill.experience}
-                          </Badge>
-                          <Badge variant={skill.trend.startsWith('+') ? 'default' : 'secondary'} className="text-xs">
-                            {skill.trend}%
-                          </Badge>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">{skill.level}%</span>
-                          <Button variant="ghost" size="sm">
-                            <Trash2 className="h-3 w-3 text-destructive" />
-                          </Button>
-                        </div>
+                <CardContent className="pt-0 space-y-2">
+                  {skillsToShow.map((skill) => (
+                    <div key={skill.name} className="flex items-center justify-between p-2 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer">
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <span className="font-medium text-sm truncate">{skill.name}</span>
+                        <Badge variant="outline" className="text-xs px-1 py-0 h-4 shrink-0">
+                          {skill.level}%
+                        </Badge>
                       </div>
-                      <Progress value={skill.level} className="h-2" />
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Utilisé dans {skill.projects} projets</span>
-                        <span>Dernière utilisation: {new Date(skill.lastUsed).toLocaleDateString('fr-FR')}</span>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <div className="w-12 bg-muted rounded-full h-1.5">
+                          <div 
+                            className="bg-primary h-1.5 rounded-full transition-all" 
+                            style={{ width: `${skill.level}%` }}
+                          />
+                        </div>
                       </div>
                     </div>
                   ))}
+                  {category.skills.length > 3 && (
+                    <div className="text-center pt-1">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-xs text-muted-foreground h-6 hover:text-primary gap-1"
+                        onClick={() => {
+                          const newExpanded = new Set(expandedCategories);
+                          if (isExpanded) {
+                            newExpanded.delete(category.category);
+                          } else {
+                            newExpanded.add(category.category);
+                          }
+                          setExpandedCategories(newExpanded);
+                        }}
+                      >
+                        {isExpanded ? (
+                          <>
+                            <ChevronUp className="h-3 w-3" />
+                            Voir moins
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="h-3 w-3" />
+                            +{category.skills.length - 3} autres
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             );
@@ -520,8 +526,12 @@ const Skills = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredCategories.flatMap(category => 
-                    category.skills.map(skill => (
+                  {(() => {
+                    const allSkills = filteredCategories.flatMap(category => 
+                      category.skills.map(skill => ({ ...skill, category: category.category }))
+                    );
+                    const skillsToShow = showAllInTable ? allSkills : allSkills.slice(0, 10);
+                    return skillsToShow.map(skill => (
                       <tr key={skill.name} className="border-b hover:bg-muted/50 transition-colors">
                         <td className="p-2">
                           <div className="flex items-center gap-2">
@@ -530,12 +540,12 @@ const Skills = () => {
                         </td>
                         <td className="p-2">
                           <Badge variant="outline" className="text-xs">
-                            {category.category}
+                            {skill.category}
                           </Badge>
                         </td>
                         <td className="p-2">
                           <div className="flex items-center gap-2">
-                            <Progress value={skill.level} className="h-2 w-20" />
+                            <Progress value={skill.level} className="h-2 w-20 [&>div]:bg-slate-400 dark:[&>div]:bg-slate-500" />
                             <span className="text-sm font-medium">{skill.level}%</span>
                           </div>
                         </td>
@@ -555,122 +565,32 @@ const Skills = () => {
                           </Button>
                         </td>
                       </tr>
-                    ))
-                  )}
+                    ));
+                  })()}
+                  {/* Bouton voir plus global */}
+                  {(() => {
+                    const totalSkills = filteredCategories.reduce((sum, cat) => sum + cat.skills.length, 0);
+                    if (totalSkills > 10 && !showAllInTable) {
+                      return (
+                        <tr className="border-b">
+                          <td colSpan={8} className="p-2 text-center">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-xs text-muted-foreground hover:text-primary gap-1"
+                              onClick={() => setShowAllInTable(true)}
+                            >
+                              <ChevronDown className="h-3 w-3" />
+                              Voir les {totalSkills - 10} autres compétences
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    }
+                    return null;
+                  })()}
                 </tbody>
               </table>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {viewMode === "radar" && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Vue Radar des Compétences</CardTitle>
-            <CardDescription>Visualisation graphique de votre profil de compétences</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-6 md:grid-cols-2">
-              {/* Radar par catégorie */}
-              {filteredCategories.map(category => (
-                <div key={category.id} className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <div className={`p-2 ${category.color} rounded-lg`}>
-                      <category.icon className="h-4 w-4 text-white" />
-                    </div>
-                    <h3 className="font-semibold">{category.category}</h3>
-                  </div>
-                  
-                  {/* Simulation radar avec barres circulaires */}
-                  <div className="grid grid-cols-2 gap-4">
-                    {category.skills.map(skill => (
-                      <div key={skill.name} className="text-center space-y-2">
-                        <div className="relative w-16 h-16 mx-auto">
-                          <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
-                            <circle
-                              cx="32"
-                              cy="32"
-                              r="28"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                              className="text-muted-foreground/20"
-                            />
-                            <circle
-                              cx="32"
-                              cy="32"
-                              r="28"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                              strokeDasharray={`${skill.level * 1.76} 176`}
-                              className="text-primary transition-all duration-1000"
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-xs font-bold">{skill.level}%</span>
-                          </div>
-                        </div>
-                        <div className="text-sm font-medium">{skill.name}</div>
-                        <div className="text-xs text-muted-foreground">{skill.experience}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {viewMode === "timeline" && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Timeline des Compétences</CardTitle>
-            <CardDescription>Évolution chronologique de vos compétences</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              {filteredCategories.map(category => (
-                <div key={category.id} className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <div className={`p-2 ${category.color} rounded-lg`}>
-                      <category.icon className="h-4 w-4 text-white" />
-                    </div>
-                    <h3 className="font-semibold">{category.category}</h3>
-                  </div>
-                  
-                  <div className="relative pl-6">
-                    <div className="absolute left-0 top-0 bottom-0 w-px bg-border"></div>
-                    {category.skills
-                      .sort((a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime())
-                      .map((skill, index) => (
-                      <div key={skill.name} className="relative pb-6">
-                        <div className="absolute -left-2 top-2 w-4 h-4 bg-primary rounded-full border-2 border-background"></div>
-                        <div className="ml-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium">{skill.name}</span>
-                              <Badge variant="outline" className="text-xs">{skill.level}%</Badge>
-                              <Badge variant={skill.trend.startsWith('+') ? 'default' : 'secondary'} className="text-xs">
-                                {skill.trend}%
-                              </Badge>
-                            </div>
-                            <span className="text-sm text-muted-foreground">
-                              {new Date(skill.lastUsed).toLocaleDateString('fr-FR')}
-                            </span>
-                          </div>
-                          <Progress value={skill.level} className="h-2 mb-2" />
-                          <div className="text-sm text-muted-foreground">
-                            {skill.experience} d'expérience • {skill.projects} projets
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
             </div>
           </CardContent>
         </Card>
@@ -801,49 +721,49 @@ const Skills = () => {
             </Dialog>
           </div>
 
-          {/* Statistiques des certifications */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
-                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+          {/* Statistiques des certifications - Version compacte */}
+          <div className="grid grid-cols-4 gap-3">
+            <Card className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-green-500/10 rounded-md">
+                  <CheckCircle className="h-3 w-3 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">{certifications.filter(c => c.status === 'active').length}</div>
-                  <div className="text-sm text-muted-foreground">Actives</div>
+                  <div className="text-lg font-bold">{certifications.filter(c => c.status === 'active').length}</div>
+                  <div className="text-xs text-muted-foreground">Actives</div>
                 </div>
               </div>
             </Card>
-            <Card className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
-                  <AlertCircle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+            <Card className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-orange-500/10 rounded-md">
+                  <AlertCircle className="h-3 w-3 text-orange-600 dark:text-orange-400" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">{certifications.filter(c => c.status === 'expiring').length}</div>
-                  <div className="text-sm text-muted-foreground">À renouveler</div>
+                  <div className="text-lg font-bold">{certifications.filter(c => c.status === 'expiring').length}</div>
+                  <div className="text-xs text-muted-foreground">À renouveler</div>
                 </div>
               </div>
             </Card>
-            <Card className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-100 dark:bg-red-900/20 rounded-lg">
-                  <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+            <Card className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-red-500/10 rounded-md">
+                  <AlertCircle className="h-3 w-3 text-red-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">{certifications.filter(c => c.status === 'expired').length}</div>
-                  <div className="text-sm text-muted-foreground">Expirées</div>
+                  <div className="text-lg font-bold">{certifications.filter(c => c.status === 'expired').length}</div>
+                  <div className="text-xs text-muted-foreground">Expirées</div>
                 </div>
               </div>
             </Card>
-            <Card className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                  <Award className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <Card className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-primary/10 rounded-md">
+                  <Award className="h-3 w-3 text-primary" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">{certifications.length}</div>
-                  <div className="text-sm text-muted-foreground">Total</div>
+                  <div className="text-lg font-bold">{certifications.length}</div>
+                  <div className="text-xs text-muted-foreground">Total</div>
                 </div>
               </div>
             </Card>

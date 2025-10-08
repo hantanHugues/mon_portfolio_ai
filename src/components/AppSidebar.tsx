@@ -76,8 +76,14 @@ export function AppSidebar({ onExpandedChange, isExpanded: externalExpanded }: A
         {/* Séparateur subtil en bas */}
         <div className="absolute bottom-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-border/20 to-transparent" />
         <div className={`flex items-center gap-3 ${!isExpanded ? 'justify-center' : ''}`}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg flex-shrink-0">
-            <span className="text-white font-bold text-base" style={{ fontFamily: "'Comfortaa', sans-serif" }}>H</span>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+            <img 
+              src="/images/logoHANTAN.png" 
+              alt="HANTAN Logo" 
+              width="40" 
+              height="40" 
+              className="rounded-xl"
+            />
           </div>
           <MotionDiv
             className="flex flex-col overflow-hidden"

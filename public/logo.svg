@@ -1,0 +1,63 @@
+<svg width=  <!-- Dessin du symbole élargi - VOTRE CODE EXACT -->
+  <g stroke="black" stroke-width="1.8" stroke-linecap="round" fill="none">
+    <!-- Ligne verticale gauche -->
+    <line x1="12" y1="10" x2="12" y2="30"/>
+    <!-- Ligne horizontale haute -->
+    <line x1="12" y1="10" x2="36" y2="10"/>
+    <!-- Ligne horizontale du milieu -->
+    <line x1="12" y1="19" x2="31" y2="19"/>
+    <!-- Ligne verticale centrale -->
+    <line x1="22" y1="10" x2="22" y2="30"/>
+    <!-- Diagonale -->
+    <line x1="12" y1="10" x2="22" y2="30"/>
+    <!-- Ligne horizontale du F -->
+    <line x1="22" y1="19" x2="34" y2="19"/>
+  </g>ewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4444c8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fond bleu avec coins arrondis -->
+  <rect x="4" y="4" width="32" height="32" rx="6" fill="url(#bgGradient)"/>
+  
+  <!-- Logo HNF avec espacement amélioré et F plus visible -->
+  <g stroke="black" stroke-width="1.5" stroke-linecap="round" fill="none">
+    <!-- Ligne verticale gauche du H -->
+    <line x1="8" y1="9" x2="8" y2="31"/>
+    
+    <!-- Ligne verticale droite du H (plus espacée) -->
+    <line x1="17" y1="9" x2="17" y2="31"/>
+    
+    <!-- Ligne horizontale haute (traverse tout) -->
+    <line x1="8" y1="9" x2="32" y2="9"/>
+    
+    <!-- Ligne horizontale milieu (raccourcie pour bien voir le F) -->
+    <line x1="8" y1="16" x2="25" y2="16"/>
+    
+    <!-- Ligne diagonale du N -->
+    <line x1="8" y1="9" x2="17" y2="31"/>
+    
+    <!-- Ligne verticale du F (plus à droite) -->
+    <line x1="29" y1="9" x2="29" y2="31"/>
+  </g>
+    
+    <!-- Ligne horizontale du F (milieu-droite) -->
+    <line x1="20" y1="16" x2="28" y2="16"/>
+  </g>
+  
+  <!-- Texte -->
+  <text x="42" y="16" font-family="'Poppins', sans-serif" font-size="11" font-weight="600" fill="currentColor" opacity="0.9">
+    HANTAN
+  </text>
+  <text x="42" y="28" font-family="'Poppins', sans-serif" font-size="8" font-weight="400" fill="currentColor" opacity="0.7">
+    DEVELOPER
+  </text>
+  
+  <!-- Éléments décoratifs -->
+  <circle cx="105" cy="12" r="1" fill="url(#bgGradient)" opacity="0.6"/>
+  <circle cx="110" cy="18" r="1.5" fill="url(#bgGradient)" opacity="0.5"/>
+  <circle cx="108" cy="28" r="1" fill="url(#bgGradient)" opacity="0.4"/>
+</svg>

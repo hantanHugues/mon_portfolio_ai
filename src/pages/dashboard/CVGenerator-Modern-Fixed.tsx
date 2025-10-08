@@ -8,8 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Download, FileText, Eye, Settings, Search, Filter, Sparkles, Code, Globe, Github, Star, Award, User, Palette, GripVertical } from "lucide-react";
-import { useState, useMemo, useRef } from "react";
+import { Download, FileText, Eye, Settings, Search, Filter, Sparkles, Code, Globe, Github, Star, Award, User, Palette } from "lucide-react";
+import { useState, useMemo } from "react";
 
 const CVGenerator = () => {
   const [selectedProjects, setSelectedProjects] = useState<number[]>([1, 2]);
@@ -20,12 +20,6 @@ const CVGenerator = () => {
   const [isAIOptimizing, setIsAIOptimizing] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [skillFilter, setSkillFilter] = useState("all");
-  
-  // État pour la position de la barre d'actions flottante
-  const [actionBarPosition, setActionBarPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const actionBarRef = useRef<HTMLDivElement>(null);
 
   // Données des projets
   const projects = [
@@ -166,48 +160,11 @@ const CVGenerator = () => {
       (skillFilter === "all" || skill.category.toLowerCase() === skillFilter.toLowerCase())
     ), [searchTerm, skillFilter]);
 
-  // Fonctions de gestion du drag & drop pour la barre d'actions
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (actionBarRef.current) {
-      const rect = actionBarRef.current.getBoundingClientRect();
-      setDragOffset({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      });
-      setIsDragging(true);
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
-      const newX = e.clientX - dragOffset.x;
-      const newY = e.clientY - dragOffset.y;
-      
-      // Limiter la position dans les bordures de l'écran
-      const maxX = window.innerWidth - (actionBarRef.current?.offsetWidth || 280);
-      const maxY = window.innerHeight - (actionBarRef.current?.offsetHeight || 200);
-      
-      setActionBarPosition({
-        x: Math.max(0, Math.min(newX, maxX)),
-        y: Math.max(0, Math.min(newY, maxY))
-      });
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
   return (
-    <div 
-      className="flex h-screen bg-gradient-to-br from-background to-muted/20 relative"
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-    >
+    <div className="flex h-screen bg-background">
       {/* SIDEBAR GAUCHE - Configuration */}
-      <div className="w-full lg:w-[480px] border-r bg-card/50 backdrop-blur-sm flex flex-col">
-        <div className="p-6 border-b border-border/30 bg-card/80 backdrop-blur-sm">
+      <div className="w-[480px] border-r bg-card flex flex-col">
+        <div className="p-6 border-b">
           <h1 className="text-xl font-bold mb-2">Générateur CV Intelligent</h1>
           <p className="text-sm text-muted-foreground mb-4">
             Créez des CV optimisés avec l'IA
@@ -259,7 +216,7 @@ const CVGenerator = () => {
             </TabsTrigger>
           </TabsList>
 
-          <div className="flex-1 overflow-y-auto px-6 pb-6 cv-generator-scroll">
+          <div className="flex-1 overflow-y-auto px-6 pb-6">
             <TabsContent value="config" className="mt-4 h-full">
               <div className="space-y-6">
                 <div>
@@ -301,7 +258,7 @@ const CVGenerator = () => {
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-border/20">
+                <div className="pt-6 border-t">
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <Palette className="h-5 w-5" />
                     Template et Style
@@ -496,14 +453,14 @@ const CVGenerator = () => {
                   </Select>
                 </div>
                 
-                <div className="space-y-3 max-h-[calc(100vh-350px)] overflow-y-auto pr-2 cv-generator-scroll">
+                <div className="space-y-3 max-h-[calc(100vh-350px)] overflow-y-auto pr-2">
                   {filteredSkills.map((skill) => (
                     <div 
                       key={skill.id} 
                       className={`p-4 border rounded-lg transition-all hover:shadow-sm ${
                         selectedSkills.includes(skill.id) 
-                          ? 'border-border bg-muted/30 shadow-sm' 
-                          : 'border-border hover:border-muted-foreground/50'
+                          ? 'border-primary bg-primary/5 shadow-sm' 
+                          : 'border-border hover:border-primary/30'
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -533,7 +490,7 @@ const CVGenerator = () => {
                             <span className="text-sm font-medium text-primary">{skill.level}%</span>
                           </div>
                           
-                          <Progress value={skill.level} className="h-2 mb-3 [&>div]:bg-slate-400 dark:[&>div]:bg-slate-500" />
+                          <Progress value={skill.level} className="h-2 mb-3" />
                           
                           <div className="flex items-center justify-between text-sm text-muted-foreground">
                             <span>Expérience: {skill.experience}</span>
@@ -570,19 +527,19 @@ const CVGenerator = () => {
 
       {/* ZONE DROITE - Aperçu en temps réel */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        <div className="p-4 border-b border-border/30 bg-card/60 backdrop-blur-sm flex-shrink-0">
+        <div className="p-6 border-b bg-card flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold mb-0.5">Aperçu en temps réel</h2>
-              <p className="text-xs text-muted-foreground">
+              <h2 className="text-xl font-semibold mb-1">Aperçu en temps réel</h2>
+              <p className="text-sm text-muted-foreground">
                 {selectedProjects.length} projet{selectedProjects.length > 1 ? 's' : ''} • {selectedSkills.length} compétence{selectedSkills.length > 1 ? 's' : ''}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 cv-generator-scroll">
-          <div className="max-w-2xl mx-auto space-y-4">
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="max-w-2xl mx-auto space-y-6">
             {/* Statistiques rapides */}
             <Card>
               <CardHeader className="pb-3">
@@ -634,7 +591,7 @@ const CVGenerator = () => {
                   <div className="p-6 h-full overflow-y-auto">
                     {/* Simulation d'un CV */}
                     <div className="bg-white dark:bg-slate-950 rounded shadow-sm p-6 space-y-4">
-                      <div className="border-b border-border/20 pb-3">
+                      <div className="border-b pb-3">
                         <h2 className="text-lg font-bold">{cvTitle || "Votre CV"}</h2>
                         <p className="text-xs text-muted-foreground">Template {templates.find(t => t.id === selectedTemplate)?.name}</p>
                       </div>
@@ -680,6 +637,10 @@ const CVGenerator = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
+                <Button className="w-full gap-2" size="lg">
+                  <Download className="h-4 w-4" />
+                  Télécharger PDF
+                </Button>
                 <Button variant="outline" className="w-full gap-2">
                   <FileText className="h-4 w-4" />
                   Aperçu détaillé
@@ -693,79 +654,8 @@ const CVGenerator = () => {
           </div>
         </div>
       </div>
-
-      {/* BARRE D'ACTIONS FLOTTANTE DÉPLAÇABLE */}
-      <div 
-        ref={actionBarRef}
-        className={`fixed z-50 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} transition-all duration-200`}
-        style={{
-          right: actionBarPosition.x === 0 ? '24px' : 'auto',
-          bottom: actionBarPosition.y === 0 ? '24px' : 'auto',
-          left: actionBarPosition.x > 0 ? `${actionBarPosition.x}px` : 'auto',
-          top: actionBarPosition.y > 0 ? `${actionBarPosition.y}px` : 'auto',
-        }}
-      >
-        <div className={`bg-card/95 backdrop-blur-md border border-border/50 rounded-xl shadow-2xl p-4 min-w-[280px] transition-all duration-200 ${isDragging ? 'shadow-3xl scale-105' : 'hover:shadow-xl'}`}>
-          {/* Poignée de déplacement */}
-          <div 
-            className="flex items-center gap-3 mb-3 cursor-grab active:cursor-grabbing"
-            onMouseDown={handleMouseDown}
-          >
-            <div className="flex items-center gap-2 flex-1">
-              <GripVertical className="h-4 w-4 text-muted-foreground" />
-              <Download className="h-5 w-5 text-primary" />
-              <span className="font-semibold text-sm">Actions CV</span>
-            </div>
-            <Badge variant="secondary" className="text-xs">
-              {selectedProjects.length} projet{selectedProjects.length > 1 ? 's' : ''} • {selectedSkills.length} skill{selectedSkills.length > 1 ? 's' : ''}
-            </Badge>
-          </div>
-          
-          <div className="space-y-2">
-            <Button 
-              className="w-full gap-2 bg-primary hover:bg-primary/90 shadow-md" 
-              size="default"
-              disabled={selectedProjects.length === 0 && selectedSkills.length === 0}
-            >
-              <Download className="h-4 w-4" />
-              Télécharger PDF
-            </Button>
-            
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex-1 gap-2 text-xs" size="sm">
-                <FileText className="h-3 w-3" />
-                Aperçu
-              </Button>
-              <Button variant="outline" className="flex-1 gap-2 text-xs" size="sm">
-                <Settings className="h-3 w-3" />
-                Options
-              </Button>
-            </div>
-          </div>
-          
-          {/* Indicateur de progression */}
-          <div className="mt-3 pt-3 border-t border-border/30">
-            <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-              <span>Complétude du CV</span>
-              <span>{Math.min(100, Math.round((selectedProjects.length * 30 + selectedSkills.length * 5) / 2))}%</span>
-            </div>
-            <Progress 
-              value={Math.min(100, Math.round((selectedProjects.length * 30 + selectedSkills.length * 5) / 2))} 
-              className="h-1.5"
-            />
-          </div>
-          
-          {/* Indicateur de déplacement */}
-          <div className="mt-2 text-center">
-            <p className="text-xs text-muted-foreground/70">
-              {isDragging ? "Relâchez pour positionner" : "Glissez la poignée pour déplacer"}
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
 
 export default CVGenerator;
-

@@ -13,7 +13,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 const Projects = () => {
+  const [activeTab, setActiveTab] = useState("projects");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
   const [isGithubDialogOpen, setIsGithubDialogOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
@@ -117,6 +119,54 @@ const Projects = () => {
       url: "https://github.com/hantan/mobile-expense-tracker",
       updated_at: "2024-12-28",
       topics: ["react-native", "mobile", "finance", "tracker"]
+    }
+  ];
+
+  // Données des événements
+  const events = [
+    {
+      id: 1,
+      title: "Conférence DevFest 2024",
+      type: "conference",
+      date: "2024-12-15",
+      location: "Paris, France",
+      description: "Présentation sur les dernières tendances en développement web avec React et TypeScript",
+      role: "Speaker",
+      audience: 300,
+      topics: ["React", "TypeScript", "Performance"],
+      linkedProject: 1, // ID du projet lié
+      article: "Retour d'expérience enrichissant sur cette conférence...",
+      status: "completed",
+      url: "https://devfest.gdgparis.com"
+    },
+    {
+      id: 2,
+      title: "Hackathon AI for Good",
+      type: "hackathon",
+      date: "2025-01-10",
+      location: "Lyon, France",
+      description: "Développement d'une solution IA pour l'accessibilité",
+      role: "Participant",
+      team: "Team Innovation",
+      prize: "2ème place",
+      topics: ["AI", "Accessibility", "Social Impact"],
+      linkedProject: null,
+      article: "48h intenses de développement pour créer une solution innovative...",
+      status: "completed"
+    },
+    {
+      id: 3,
+      title: "Workshop React Native",
+      type: "workshop",
+      date: "2025-02-05",
+      location: "En ligne",
+      description: "Animation d'un workshop sur le développement mobile avec React Native",
+      role: "Animateur",
+      audience: 50,
+      topics: ["React Native", "Mobile", "Cross-platform"],
+      linkedProject: 103,
+      article: "",
+      status: "upcoming"
     }
   ];
 
@@ -270,14 +320,31 @@ ${project.tags.map((tag: string) => `- **${tag}** : Utilisé pour...`).join('\n'
       {/* Header avec actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight mb-2">Projets</h1>
+          <h1 className="text-4xl font-bold tracking-tight mb-2">Projets & Événements</h1>
           <p className="text-muted-foreground text-lg">
-            Gérez vos projets et leur visibilité sur votre portfolio
+            Gérez vos projets, événements et leur visibilité sur votre portfolio
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          {/* Bouton Import GitHub */}
-          <Dialog open={isGithubDialogOpen} onOpenChange={setIsGithubDialogOpen}>
+      </div>
+
+      {/* Onglets */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-2 max-w-md">
+          <TabsTrigger value="projects" className="gap-2">
+            <FolderKanban className="h-4 w-4" />
+            Projets
+          </TabsTrigger>
+          <TabsTrigger value="events" className="gap-2">
+            <Calendar className="h-4 w-4" />
+            Événements
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Contenu Projets */}
+        <TabsContent value="projects" className="space-y-6 mt-6">
+          <div className="flex items-center gap-3">
+            {/* Bouton Import GitHub */}
+            <Dialog open={isGithubDialogOpen} onOpenChange={setIsGithubDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" className="gap-2">
                 <Github className="h-4 w-4" />
@@ -533,9 +600,8 @@ ${project.tags.map((tag: string) => `- **${tag}** : Utilisé pour...`).join('\n'
             </DialogContent>
           </Dialog>
         </div>
-      </div>
 
-      {/* Liste des projets */}
+        {/* Liste des projets */}
       <div className="grid gap-6">
         {projects.map((project) => (
           <Card key={project.id} className="hover:shadow-lg transition-all duration-300 border-l-4 border-l-transparent hover:border-l-primary overflow-hidden">
@@ -915,6 +981,196 @@ ${project.tags.map((tag: string) => `- **${tag}** : Utilisé pour...`).join('\n'
           )}
         </DialogContent>
       </Dialog>
+        </TabsContent>
+
+        {/* Contenu Événements */}
+        <TabsContent value="events" className="space-y-6 mt-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold">Événements</h2>
+              <p className="text-muted-foreground">Gérez vos participations aux événements tech</p>
+            </div>
+            <Dialog open={isCreateEventOpen} onOpenChange={setIsCreateEventOpen}>
+              <DialogTrigger asChild>
+                <Button className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  Ajouter un événement
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl dialog-centered">
+                <DialogHeader>
+                  <DialogTitle>Nouveau événement</DialogTitle>
+                  <DialogDescription>
+                    Ajoutez un événement auquel vous avez participé ou allez participer
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="event-title">Titre de l'événement</Label>
+                      <Input id="event-title" placeholder="Ex: DevFest 2024" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="event-type">Type</Label>
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionner le type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="conference">Conférence</SelectItem>
+                          <SelectItem value="hackathon">Hackathon</SelectItem>
+                          <SelectItem value="workshop">Workshop</SelectItem>
+                          <SelectItem value="meetup">Meetup</SelectItem>
+                          <SelectItem value="competition">Compétition</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="event-date">Date</Label>
+                      <Input id="event-date" type="date" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="event-location">Lieu</Label>
+                      <Input id="event-location" placeholder="Ex: Paris, France" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="event-description">Description</Label>
+                    <Textarea id="event-description" placeholder="Décrivez votre participation..." />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="event-role">Votre rôle</Label>
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionner votre rôle" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="speaker">Speaker</SelectItem>
+                          <SelectItem value="participant">Participant</SelectItem>
+                          <SelectItem value="organizer">Organisateur</SelectItem>
+                          <SelectItem value="mentor">Mentor</SelectItem>
+                          <SelectItem value="jury">Jury</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="linked-project">Projet lié (optionnel)</Label>
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Associer un projet" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {projects.map(project => (
+                            <SelectItem key={project.id} value={project.id.toString()}>
+                              {project.title}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="event-article">Article/Retour d'expérience</Label>
+                    <Textarea 
+                      id="event-article" 
+                      placeholder="Rédigez un article sur cet événement..." 
+                      className="min-h-32"
+                    />
+                  </div>
+                  <div className="flex justify-end gap-3">
+                    <Button variant="outline" onClick={() => setIsCreateEventOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button onClick={() => setIsCreateEventOpen(false)}>
+                      Créer l'événement
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          {/* Liste des événements */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {events.map((event) => (
+              <Card key={event.id} className="hover:shadow-md transition-all duration-200">
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1">
+                      <CardTitle className="text-lg">{event.title}</CardTitle>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary">{event.type}</Badge>
+                        <Badge variant={event.status === 'completed' ? 'default' : 'outline'}>
+                          {event.status === 'completed' ? 'Terminé' : 'À venir'}
+                        </Badge>
+                      </div>
+                    </div>
+                    <Button variant="ghost" size="sm">
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Calendar className="h-3 w-3" />
+                      {new Date(event.date).toLocaleDateString('fr-FR')}
+                    </div>
+                    <div>{event.location}</div>
+                  </div>
+                  
+                  <p className="text-sm">{event.description}</p>
+                  
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      {event.role}
+                    </Badge>
+                    {event.linkedProject && (
+                      <Badge variant="outline" className="text-xs">
+                        <LinkIcon className="h-3 w-3 mr-1" />
+                        Projet lié
+                      </Badge>
+                    )}
+                  </div>
+                  
+                  {event.topics && (
+                    <div className="flex flex-wrap gap-1">
+                      {event.topics.map((topic) => (
+                        <Badge key={topic} variant="secondary" className="text-xs">
+                          {topic}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-between pt-2">
+                    <div className="flex items-center gap-2">
+                      {event.url && (
+                        <Button variant="ghost" size="sm" asChild>
+                          <a href={event.url} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        </Button>
+                      )}
+                      {event.article && (
+                        <Button variant="ghost" size="sm">
+                          <FileText className="h-3 w-3" />
+                        </Button>
+                      )}
+                    </div>
+                    <Button variant="ghost" size="sm">
+                      <Share2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

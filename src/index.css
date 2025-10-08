@@ -445,4 +445,47 @@
   .dark .dialog-centered {
     scrollbar-color: rgb(75 85 99) rgb(31 41 55);
   }
+
+  /* Scrollbars personnalisées pour le générateur CV */
+  .cv-generator-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.4) rgba(243, 244, 246, 0.1);
+  }
+
+  .cv-generator-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .cv-generator-scroll::-webkit-scrollbar-track {
+    background: rgba(243, 244, 246, 0.1);
+    border-radius: 3px;
+  }
+
+  .cv-generator-scroll::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.4);
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+  }
+
+  .cv-generator-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.6);
+  }
+
+  /* Mode sombre pour les scrollbars du générateur CV */
+  .dark .cv-generator-scroll {
+    scrollbar-color: rgba(156, 163, 175, 0.5) rgba(55, 65, 81, 0.1);
+  }
+
+  .dark .cv-generator-scroll::-webkit-scrollbar-track {
+    background: rgba(55, 65, 81, 0.1);
+  }
+
+  .dark .cv-generator-scroll::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+  }
+
+  .dark .cv-generator-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.7);
+  }
 }
