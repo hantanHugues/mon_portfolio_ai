@@ -2,6 +2,7 @@ import { Navigation } from "@/components/sections/Navigation";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
+import { AchievementsSection } from "@/components/sections/AchievementsSection";
 import { HobbiesSection } from "@/components/sections/HobbiesSection";
 import { ApproachSection } from "@/components/sections/ApproachSection";
 import { ContactSection } from "@/components/sections/ContactSection";
@@ -22,6 +23,10 @@ export default function Portfolio() {
             
             <SectionTransition direction="up" delay={0.1}>
                 <ProjectsSection />
+            </SectionTransition>
+            
+            <SectionTransition direction="up" delay={0.2}>
+                <AchievementsSection />
             </SectionTransition>
             
             <SectionTransition direction="fade" delay={0.2}>

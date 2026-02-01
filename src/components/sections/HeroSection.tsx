@@ -201,7 +201,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 1.5 }}
             className="text-xl md:text-2xl text-muted-foreground font-medium"
           >
-            Expert IoT & Développeur Full-Stack
+            Développeur IoT & Frontend Specialist
           </MotionDiv>
 
           {/* Description avec effet de défloutage */}
@@ -226,8 +226,7 @@ export const HeroSection = () => {
             }}
             className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
           >
-            Je développe des applications web modernes, des solutions IoT innovantes et des systèmes robotiques intelligents. 
-            Du frontend classique aux technologies embarquées, je connecte tous les mondes digitaux.
+            Passionné par l'IoT et le développement d'interfaces modernes. Je maîtrise le backend embarqué (microcontrôleurs, capteurs, communication hardware), crée des expériences frontend fluides, et perfectionne mes compétences en backend web.
           </MotionP>
           </MotionDiv>
 
@@ -243,8 +242,15 @@ export const HeroSection = () => {
             animate={showDescription ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.6, delay: 1.0 }}
           >
-            <Button size="lg" className="gap-2 px-8 py-4 text-lg hover-lift shadow-glow">
-              <Mail className="h-5 w-5" /> Contactez-moi
+            <Button 
+              size="lg" 
+              className="gap-2 px-8 py-4 text-lg hover-lift shadow-glow"
+              onClick={() => {
+                const projectsSection = document.getElementById('projects');
+                projectsSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Voir mes projets <ArrowRight className="h-4 w-4" />
             </Button>
           </MotionDiv>
           <MotionDiv
@@ -252,8 +258,16 @@ export const HeroSection = () => {
             animate={showDescription ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
             transition={{ duration: 0.6, delay: 1.2 }}
           >
-            <Button variant="outline" size="lg" className="gap-2 px-8 py-4 text-lg hover-lift">
-              Voir mes projets <ArrowRight className="h-4 w-4" />
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="gap-2 px-8 py-4 text-lg hover-lift"
+              onClick={() => {
+                const contactSection = document.getElementById('contact');
+                contactSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <Mail className="h-5 w-5" /> Contactez-moi
             </Button>
           </MotionDiv>
         </MotionDiv>
@@ -361,7 +375,7 @@ export const HeroSection = () => {
             {/* Image principale */}
             <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl">
               <img
-                src="/images/Adobe Express - file.png"
+                src={`${import.meta.env.BASE_URL}images/Adobe Express - file.png`}
                 alt="HANTAN Hugues - Développeur Portfolio"
                 className="w-80 h-96 md:w-96 md:h-[500px] object-cover hover:scale-105 transition-transform duration-500"
               />

@@ -10,42 +10,42 @@ export const ContactSection = () => {
     { 
       icon: Github, 
       name: "GitHub", 
-      url: "https://github.com/hantan-hugues", 
+      url: "https://github.com/hantanHugues", 
       description: "Mes projets open-source",
       color: "hover:text-gray-900 dark:hover:text-white"
     },
     { 
       icon: Linkedin, 
       name: "LinkedIn", 
-      url: "https://linkedin.com/in/hantan-hugues", 
+      url: "https://www.linkedin.com/in/agossou-fred-hugues-hantan-35992431b", 
       description: "Mon réseau professionnel",
       color: "hover:text-blue-600"
     },
     { 
       icon: Youtube, 
       name: "YouTube", 
-      url: "https://youtube.com/@hantan-hugues", 
+      url: "https://www.youtube.com/@AgossouFredHuguesHANTAN", 
       description: "Tutoriels IoT & Robotique",
       color: "hover:text-red-600"
     },
     { 
       icon: Twitter, 
       name: "Twitter", 
-      url: "https://twitter.com/hantan_hugues", 
+      url: "https://x.com/Ashlynx_005", 
       description: "Actualités tech & projets",
       color: "hover:text-blue-400"
     },
     { 
       icon: Instagram, 
       name: "Instagram", 
-      url: "https://instagram.com/hantan.hugues", 
+      url: "https://www.instagram.com/ashlanvonnewgat", 
       description: "Behind the scenes",
       color: "hover:text-pink-600"
     },
     { 
       icon: Mail, 
       name: "Email", 
-      url: "mailto:hantan.hugues@example.com", 
+      url: "mailto:ashlanvonnewgat@gmail.com", 
       description: "Contact direct",
       color: "hover:text-green-600"
     }

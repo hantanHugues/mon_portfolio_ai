@@ -105,7 +105,7 @@ export const Navigation = () => {
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-all duration-300 hover:scale-105">
             <div className="flex items-center">
               <img 
-                src="/images/logoHANTAN.png" 
+                src={`${import.meta.env.BASE_URL}images/logoHANTAN.png`} 
                 alt="HANTAN Logo" 
                 width="32" 
                 height="32" 
@@ -175,22 +175,6 @@ export const Navigation = () => {
               transition={{ duration: 0.4, delay: 0.7 }}
             >
               <ThemeToggle />
-            </MotionDiv>
-            
-            <MotionDiv
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.8 }}
-            >
-              <Link to="/dashboard">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className="border-primary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
-                >
-                  Admin
-                </Button>
-              </Link>
             </MotionDiv>
           </div>
         </div>

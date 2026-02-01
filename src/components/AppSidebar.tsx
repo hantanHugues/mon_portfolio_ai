@@ -78,7 +78,7 @@ export function AppSidebar({ onExpandedChange, isExpanded: externalExpanded }: A
         <div className={`flex items-center gap-3 ${!isExpanded ? 'justify-center' : ''}`}>
           <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
             <img 
-              src="/images/logoHANTAN.png" 
+              src={`${import.meta.env.BASE_URL}images/logoHANTAN.png`} 
               alt="HANTAN Logo" 
               width="40" 
               height="40" 
