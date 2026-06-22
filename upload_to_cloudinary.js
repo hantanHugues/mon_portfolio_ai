@@ -1,12 +1,13 @@
 import { v2 as cloudinary } from 'cloudinary';
 import sharp from 'sharp';
 import fs from 'fs';
+import 'dotenv/config';
 
 // 1. Configurer Cloudinary
 cloudinary.config({ 
-  cloud_name: 'dkiirtzxl', 
-  api_key: '366812798815119', 
-  api_secret: 'CC9XTtIdWVvXskIKWOL4RGcZGlY' 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET 
 });
 
 async function run() {
