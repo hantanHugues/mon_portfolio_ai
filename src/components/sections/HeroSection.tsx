@@ -375,7 +375,7 @@ export const HeroSection = () => {
             {/* Image principale */}
             <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl">
               <img
-                src={`${import.meta.env.BASE_URL}images/Adobe Express - file.png`}
+                src="https://res.cloudinary.com/dkiirtzxl/image/upload/f_auto,q_auto/adob_machin_portfolio"
                 alt="HANTAN Hugues - Développeur Portfolio"
                 className="w-80 h-96 md:w-96 md:h-[500px] object-cover hover:scale-105 transition-transform duration-500"
               />
